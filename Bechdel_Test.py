@@ -17,16 +17,16 @@ print(df.head())
 # RATING ->Becheld Score of the movie from 0 to 3. Rating Lower than 3 means the movie failed the Bechdel Test
 
 # When we look at the column 'YEAR' we'll see that there are movies from 19th century.
-# And most of them has Bechdel score of 0. I'm going to split my Dataframe into to, one with Movies before 1956.
+# And most of them has Bechdel score of 0. I'm going to split my Data frame into to, one with Movies before 1956.
 # And the second one will have Movies after 1956.
 dfBefore = df[df["year"] < 1956]
 dfAfter = df[df["year"] >= 1956]
 
-# Now we can look if we create our new dataframes correctly
+# Now we can look if we create our new data frames correctly
 print("\n",dfBefore['year'].max(),dfAfter['year'].min())
 
 # As we can see, dataframe with movies before 1956 contain movies which wasen't released after 1955,
-# and dataframe with movies after 1956 starts at 1956. So we created dataframe correctly
+# and dataframe with movies after 1956 starts at 1956. So we created data frame correctly
 
 # Now i want to show proportion in movies before and after 1956 which get 0,1,2 or 3 points in Bechdel Test
 fig, axs = plt.subplots(ncols=2,nrows=1,sharey=True) 
@@ -39,7 +39,7 @@ plt.pause(15)
 plt.close()
 
 # As we can see movies after 1956 are more likely to pass Bechdel Test.
-# that's whhy i'm going to focus on Dataframe with movies released after 1956
+# that's whhy i'm going to focus on Data frame with movies released after 1956
 # Now i'm going to create list with 1/0, where '0' means movie didn't passed Bechdel Test and '1' means that the movie passed it
 
 movie_list = []
@@ -50,10 +50,24 @@ for score in dfAfter['rating']:
         movie_list.append(1)
 
 dfAfter['passed test'] = movie_list
-print(dfAfter.head())
 
 # now it's time to count how many movies passed or didn't pass this test
 sns.countplot(x='passed test',data=dfAfter)
 plt.show(block=False)
 plt.pause(15)
 plt.close()
+
+dfAfter.rename(columns={'rating':'bechdel test'},inplace=True)
+
+# Now i want to visualize relationship betwin IMBD rating and the Bachdel scores. 
+# I want to knwo if movies with higher scores are more likly to have higher IMBF rating.
+# If i want to do this i'll need to merge new dataset called "movies.csv" with existing data frame
+# To do this I need to have only Titles and Ratings from "movies.csv"
+movies = pd.read_csv('movies.csv')
+imbd = movies[['title','rating']]
+
+dfAfter = pd.merge(dfAfter,imbd,how='left',left_on=['title'],right_on=['title'])
+print(dfAfter.head())
+
+# There might be some null values so i'm going to drop rows with null value
+dfAfter = dfAfter.dropna()
