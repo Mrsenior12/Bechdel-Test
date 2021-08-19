@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 import urllib,json
 #What is a Bechdel Test?
@@ -26,3 +27,33 @@ print("\n",dfBefore['year'].max(),dfAfter['year'].min())
 
 # As we can see, dataframe with movies before 1956 contain movies which wasen't released after 1955,
 # and dataframe with movies after 1956 starts at 1956. So we created dataframe correctly
+
+# Now i want to show proportion in movies before and after 1956 which get 0,1,2 or 3 points in Bechdel Test
+fig, axs = plt.subplots(ncols=2,nrows=1,sharey=True) 
+sns.countplot(x='rating',data=dfBefore,ax=axs[0])
+sns.countplot(x='rating',data=dfAfter,ax=axs[1])
+axs[0].set_title('before 1956')
+axs[1].set_title('after 1956')
+plt.show(block=False)
+plt.pause(15)
+plt.close()
+
+# As we can see movies after 1956 are more likely to pass Bechdel Test.
+# that's whhy i'm going to focus on Dataframe with movies released after 1956
+# Now i'm going to create list with 1/0, where '0' means movie didn't passed Bechdel Test and '1' means that the movie passed it
+
+movie_list = []
+for score in dfAfter['rating']:
+    if score != 3:
+        movie_list.append(0)
+    else:
+        movie_list.append(1)
+
+dfAfter['passed test'] = movie_list
+print(dfAfter.head())
+
+# now it's time to count how many movies passed or didn't pass this test
+sns.countplot(x='passed test',data=dfAfter)
+plt.show(block=False)
+plt.pause(15)
+plt.close()
