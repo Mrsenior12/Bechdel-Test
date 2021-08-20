@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import urllib,json
+from plotnine import ggplot,geom_point,aes,geom_line
+
+from seaborn.palettes import color_palette
 #What is a Bechdel Test?
 #The Bechdel Test is a measure of the representation of women in fiction. 
 #It asks whether a work features at least two women who talk to each other about something other than a man.
@@ -19,8 +22,8 @@ print(df.head())
 # When we look at the column 'YEAR' we'll see that there are movies from 19th century.
 # And most of them has Bechdel score of 0. I'm going to split my Data frame into to, one with Movies before 1956.
 # And the second one will have Movies after 1956.
-dfBefore = df[df["year"] < 1956]
-dfAfter = df[df["year"] >= 1956]
+dfBefore = df[df["year"] < 1967]
+dfAfter = df[df["year"] >= 1967]
 
 # Now we can look if we create our new data frames correctly
 print("\n",dfBefore['year'].max(),dfAfter['year'].min())
@@ -57,7 +60,10 @@ plt.show(block=False)
 plt.pause(15)
 plt.close()
 
-dfAfter.rename(columns={'rating':'bechdel test'},inplace=True)
+dfAfter.rename(columns={'rating':'bechdel score'},inplace=True)
+dfAfter['year'] = pd.to_datetime(dfAfter['year'], format='%Y')
+dfAfter['Bechdel Score'] = dfAfter['bechdel score'].astype('category',copy=False)
+
 
 # Now i want to visualize relationship betwin IMBD rating and the Bachdel scores. 
 # I want to knwo if movies with higher scores are more likly to have higher IMBF rating.
@@ -71,3 +77,13 @@ print(dfAfter.head())
 
 # There might be some null values so i'm going to drop rows with null value
 dfAfter = dfAfter.dropna()
+#gph = (
+#    ggplot(dfAfter, aes('year',color='bechdel score')) 
+#    + geom_point(stat='count',show_legend=False)
+#    + geom_line(stat='count',show_legend=False)
+#)
+gph = (ggplot(dfAfter)
++geom_point(aes('year',color='bechdel score'),stat='count',show_legend=False)
++geom_line(aes('year',color='bechdel score'),stat='count',show_legend=False)
+)
+print(gph)
