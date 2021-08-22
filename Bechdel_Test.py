@@ -184,6 +184,28 @@ print(ggplot(dfLatest,aes(x='year',y='budget',color='gender'))
     +geom_smooth())
 # We can see that ther's no correlation between gender and movie's budget
 
+# Now I would like to see which genre are most likely to pass Bechdel test
+dfLatest['genre'] = latest['genre']
+print(ggplot(dfLatest,aes(x='year',y='genre',color='bechdel score'))
+    +geom_point())
 
+dfLatest['gross'] = latest['gross']
+print(ggplot(dfLatest,aes(x='year',y='gross',color='bechdel score'))
+    +geom_point())
 
+print(ggplot(dfLatest,aes(x='year',y='gross',color='gender'))
++geom_point()
++geom_smooth())
 
+# And that's it! I managed to visualize relationship and answer all the data question.
+# Few interesting facts:
+# 1. Over the years, number of movies which pass Bechdel test has been increasing
+# 2. Movies which didn't pass Bechdel test are more likely to have higher IMBD ratings
+# 3. Movies directed by female are more likely to pass Bechdel test.
+# 4. There's no clear correlation between the budget or revenue of a movie and its Bechdel score or gender of the director
+# However this analysis might not represent entire population of movies. 
+# If we want to make good conclusion than we should take data sets from different places. 
+# Last but not least, Bechdel test isn't the best benchmark to measure female representation in movies. 
+# It doesn't take into consideration how well character is written or its impact for story of a movie.
+
+# data sets can be found here: https://github.com/Natassha/Bechdel-Test
