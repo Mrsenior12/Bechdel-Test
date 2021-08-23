@@ -8,7 +8,6 @@ import urllib,json
 from plotnine import ggplot,geom_point,aes,geom_line,geom_smooth,labs
 import gender_guesser.detector as gender
 
-from seaborn.palettes import color_palette
 #What is a Bechdel Test?
 #The Bechdel Test is a measure of the representation of women in fiction. 
 #It asks whether a work features at least two women who talk to each other about something other than a man.
