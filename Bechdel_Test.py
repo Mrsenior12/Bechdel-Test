@@ -182,7 +182,6 @@ print(ggplot(dfLatest,aes(x='year',y='budget',color='gender'))
     +geom_point()
     +geom_smooth())
 # We can see that ther's no correlation between gender and movie's budget
-
 # Now I would like to see which genre are most likely to pass Bechdel test
 dfLatest['genre'] = latest['genre']
 print(ggplot(dfLatest,aes(x='year',y='genre',color='bechdel score'))
@@ -195,6 +194,18 @@ print(ggplot(dfLatest,aes(x='year',y='gross',color='bechdel score'))
 print(ggplot(dfLatest,aes(x='year',y='gross',color='gender'))
 +geom_point()
 +geom_smooth())
+
+#Lastly  i want to make heatmap of all numerical values in Data Frame 'dfLatest'
+print(dfLatest.head())
+dfCorr = dfLatest.copy()
+dfCorr['bechdel score'] = dfCorr['bechdel score'].astype('int64',copy=False)
+print(dfCorr.info())
+dfCorr = dfCorr.corr()
+sns.heatmap(dfCorr,annot = True)
+plt.show()
+# As we can see on this heatmap, only 'bechdel score' and 'passed test' are very strongly correlated
+# I thought that 'budget' and 'gross' would be also very strong correlated, but they are not
+# The rest of variables are very weakly correlated.
 
 # And that's it! I managed to visualize relationship and answer all the data question.
 # Few interesting facts:
