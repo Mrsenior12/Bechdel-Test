@@ -7,6 +7,8 @@ import numpy as np
 import urllib,json
 from plotnine import ggplot,geom_point,aes,geom_line,geom_smooth,labs
 import gender_guesser.detector as gender
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 #What is a Bechdel Test?
 #The Bechdel Test is a measure of the representation of women in fiction. 
